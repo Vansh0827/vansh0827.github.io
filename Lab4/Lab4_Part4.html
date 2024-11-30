@@ -1,164 +1,174 @@
-<!--
-	Name: Vansh Patel
-	File: Lab4_Part1.html
-	Date: 28 November 2024
-	-->
 <!DOCTYPE html>
 <html lang="en-US">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
-    <title>Bouncing Balls</title>
-    <style>
-      /* Basic Reset and Styling */
-      html, body {
-        margin: 0;
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Bouncing Balls</title>
+  <style>
+    html, body {
+      margin: 0;
+    }
+
+    html {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      height: 100%;
+    }
+
+    body {
+      overflow: hidden;
+      height: inherit;
+      background-color: #000;
+      color: white;
+    }
+
+    h1 {
+      font-size: 2rem;
+      letter-spacing: -1px;
+      position: absolute;
+      margin: 0;
+      top: 10px;
+      left: 10px;
+    }
+
+    #ballsLeft {
+      position: absolute;
+      margin: 0;
+      top: 50px;
+      left: 10px;
+      font-size: 1.5rem;
+    }
+
+    canvas {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <h1>Bouncing Balls</h1>
+  <p id="ballsLeft">Balls Left: 25</p>
+  <canvas></canvas>
+
+  <script>
+    const canvas = document.querySelector("canvas");
+    const ctx = canvas.getContext("2d");
+
+    const width = (canvas.width = window.innerWidth);
+    const height = (canvas.height = window.innerHeight);
+
+    function random(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function randomRGB() {
+      return `rgb(${random(0, 255)},${random(0, 255)},${random(0, 255)})`;
+    }
+
+    class Ball {
+      constructor(x, y, velX, velY, color, size) {
+        this.x = x;
+        this.y = y;
+        this.velX = velX;
+        this.velY = velY;
+        this.color = color;
+        this.size = size;
+        this.exists = true; // Tracks if the ball is still active
       }
 
-      html {
-        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-        height: 100%;
-      }
-
-      body {
-        overflow: hidden;
-        height: inherit;
-        background-color: #000;
-      }
-
-      h1 {
-        font-size: 2rem;
-        letter-spacing: -1px;
-        position: absolute;
-        margin: 0;
-        top: -4px;
-        right: 5px;
-        color: transparent;
-        text-shadow: 0 0 4px white;
-      }
-
-      canvas {
-        display: block;
-      }
-    </style>
-  </head>
-
-  <body>
-    <h1>Bouncing Balls</h1>
-    <canvas></canvas>
-
-    <script>
-      // Set up canvas
-      const canvas = document.querySelector("canvas");
-      const ctx = canvas.getContext("2d");
-
-      const width = (canvas.width = window.innerWidth);
-      const height = (canvas.height = window.innerHeight);
-
-      // Function to generate random number
-      function random(min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-      }
-
-      // Function to generate random RGB color value
-      function randomRGB() {
-        return `rgb(${random(0, 255)},${random(0, 255)},${random(0, 255)})`;
-      }
-
-      // Ball Class Definition
-      class Ball {
-        constructor(x, y, velX, velY, color, size) {
-          this.x = x;
-          this.y = y;
-          this.velX = velX;
-          this.velY = velY;
-          this.color = color;
-          this.size = size;
-        }
-
-        // Method to draw the ball
-        draw() {
+      draw() {
+        if (this.exists) {
           ctx.beginPath();
           ctx.fillStyle = this.color;
           ctx.arc(this.x, this.y, this.size, 0, 2 * Math.PI);
           ctx.fill();
         }
+      }
 
-        // Method to update the position of the ball
-        update() {
-          if (this.x + this.size >= width) {
-            this.velX = -Math.abs(this.velX);
+      update() {
+        if (this.exists) {
+          if (this.x + this.size >= width || this.x - this.size <= 0) {
+            this.velX = -this.velX;
           }
 
-          if (this.x - this.size <= 0) {
-            this.velX = Math.abs(this.velX);
-          }
-
-          if (this.y + this.size >= height) {
-            this.velY = -Math.abs(this.velY);
-          }
-
-          if (this.y - this.size <= 0) {
-            this.velY = Math.abs(this.velY);
+          if (this.y + this.size >= height || this.y - this.size <= 0) {
+            this.velY = -this.velY;
           }
 
           this.x += this.velX;
           this.y += this.velY;
         }
+      }
 
-        // Collision detection between balls
-        collisionDetect() {
-          for (const ball of balls) {
-            if (!(this === ball)) {
-              const dx = this.x - ball.x;
-              const dy = this.y - ball.y;
-              const distance = Math.sqrt(dx * dx + dy * dy);
+      collisionDetect() {
+        if (this.exists) {
+          const dx = this.x - bouncingBall.x;
+          const dy = this.y - bouncingBall.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
 
-              if (distance < this.size + ball.size) {
-                ball.color = this.color = randomRGB();
-              }
-            }
+          if (distance < this.size + bouncingBall.size) {
+            this.exists = false;
+            bouncingBall.color = randomRGB(); // Change Bouncing Ball's color
+            updateBallsLeft();
           }
         }
       }
+    }
 
-      // Array to store all the balls
-      const balls = [];
-
-      // Create 25 balls with random properties
-      while (balls.length < 25) {
-        const size = random(10, 20);
-        const ball = new Ball(
-          random(0 + size, width - size),
-          random(0 + size, height - size),
-          random(-7, 7),
-          random(-7, 7),
-          randomRGB(),
-          size
-        );
-
-        balls.push(ball);
+    class BouncingBall {
+      constructor(x, y, color, size) {
+        this.x = x;
+        this.y = y;
+        this.color = color;
+        this.size = size;
       }
 
-      // Animation loop function
-      function loop() {
-        // Clear the canvas with a transparent black fill
-        ctx.fillStyle = "rgba(0, 0, 0, 0.25)";
-        ctx.fillRect(0, 0, width, height);
+      draw() {
+        ctx.beginPath();
+        ctx.strokeStyle = this.color;
+        ctx.lineWidth = 3;
+        ctx.arc(this.x, this.y, this.size, 0, 2 * Math.PI);
+        ctx.stroke();
+      }
+    }
 
-        // Update and draw all balls
-        for (const ball of balls) {
-          ball.draw();
-          ball.update();
-          ball.collisionDetect();
-        }
+    const balls = [];
+    const bouncingBall = new BouncingBall(width / 2, height / 2, "white", 30);
 
-        // Call the loop function again to create continuous animation
-        requestAnimationFrame(loop);
+    while (balls.length < 25) {
+      const size = random(10, 20);
+      const ball = new Ball(
+        random(0 + size, width - size),
+        random(0 + size, height - size),
+        random(-7, 7),
+        random(-7, 7),
+        randomRGB(),
+        size
+      );
+
+      balls.push(ball);
+    }
+
+    function updateBallsLeft() {
+      const ballsLeft = balls.filter((ball) => ball.exists).length;
+      document.getElementById("ballsLeft").textContent = `Balls Left: ${ballsLeft}`;
+    }
+
+    function loop() {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.25)";
+      ctx.fillRect(0, 0, width, height);
+
+      bouncingBall.draw();
+
+      for (const ball of balls) {
+        ball.draw();
+        ball.update();
+        ball.collisionDetect();
       }
 
-      // Start the animation loop
-      loop();
-    </script>
-  </body>
+      requestAnimationFrame(loop);
+    }
+
+    updateBallsLeft(); // Initialize the balls left count
+    loop();
+  </script>
+</body>
 </html>
