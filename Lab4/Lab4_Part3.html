@@ -1,0 +1,135 @@
+<!--
+	Name: Vansh Patel
+	File: Lab4_Part1.html
+	Date: 28 November 2024
+	Description: This code animates bouncing balls on a canvas by generating random positions, speeds, and colors, then updating their movement and bouncing off the edges.
+	-->
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Bouncing Balls</title>
+  <style>
+    /* CSS Styles */
+    html, body {
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      height: 100%;
+    }
+
+    body {
+      overflow: hidden;
+      height: inherit;
+    }
+
+    h1 {
+      font-size: 2rem;
+      letter-spacing: -1px;
+      position: absolute;
+      margin: 0;
+      top: 20px;
+      right: 20px;
+      color: transparent;
+      text-shadow: 0 0 4px white;
+    }
+  </style>
+</head>
+<body>
+  <h1>bouncing balls</h1>
+  <canvas></canvas>
+  <script>
+    // JavaScript code
+
+    // Setup canvas
+    const canvas = document.querySelector("canvas");
+    const ctx = canvas.getContext("2d");
+
+    const width = (canvas.width = window.innerWidth);
+    const height = (canvas.height = window.innerHeight);
+
+    // Function to generate random number
+    function random(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    // Function to generate random RGB color
+    function randomRGB() {
+      return `rgb(${random(0, 255)}, ${random(0, 255)}, ${random(0, 255)})`;
+    }
+
+    // Ball class
+    class Ball {
+      constructor(x, y, radius, dx, dy, color) {
+        this.x = x;
+        this.y = y;
+        this.radius = radius;
+        this.dx = dx;
+        this.dy = dy;
+        this.color = color;
+      }
+
+      // Method to draw the ball
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+        ctx.closePath();
+      }
+
+      // Method to update ball position and detect collision
+      update() {
+        // Bounce off the walls
+        if (this.x + this.radius > width || this.x - this.radius < 0) {
+          this.dx = -this.dx;
+        }
+
+        if (this.y + this.radius > height || this.y - this.radius < 0) {
+          this.dy = -this.dy;
+        }
+
+        // Move the ball
+        this.x += this.dx;
+        this.y += this.dy;
+      }
+    }
+
+    // Array to hold balls
+    const balls = [];
+
+    // Create random balls
+    for (let i = 0; i < 10; i++) {
+      const radius = random(20, 50);
+      const x = random(radius, width - radius);
+      const y = random(radius, height - radius);
+      const dx = random(-4, 4);
+      const dy = random(-4, 4);
+      const color = randomRGB();
+      balls.push(new Ball(x, y, radius, dx, dy, color));
+    }
+
+    // Animation loop
+    function animate() {
+      // Clear canvas
+      ctx.clearRect(0, 0, width, height);
+
+      // Update and draw each ball
+      balls.forEach(ball => {
+        ball.update();
+        ball.draw();
+      });
+
+      // Request next frame
+      requestAnimationFrame(animate);
+    }
+
+    // Start animation
+    animate();
+  </script>
+</body>
+</html>

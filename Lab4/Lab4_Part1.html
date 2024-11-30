@@ -1,0 +1,108 @@
+<!--
+	Name: Vansh Patel
+	File: Lab4_Part1.html
+	Date: 28 November 2024
+	Description: This code generate silly story and ask user to US or UK.
+	-->
+
+
+
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+
+    <title>Silly story generator</title>
+
+    <style>
+      body {
+        font-family: helvetica, sans-serif;
+        width: 350px;
+      }
+
+      label {
+        font-weight: bold;
+      }
+
+      div {
+        padding-bottom: 20px;
+      }
+
+      input[type="text"] {
+        padding: 5px;
+        width: 150px;
+      }
+
+      p {
+        background: #ffc125;
+        color: #5e2612;
+        padding: 10px;
+        visibility: hidden;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div>
+      <label for="customname">Enter custom name:</label>
+      <input id="customname" type="text" placeholder="" />
+    </div>
+    <div>
+      <label for="us">US</label>
+      <input id="us" type="radio" name="ukus" value="us" checked />
+      <label for="uk">UK</label>
+      <input id="uk" type="radio" name="ukus" value="uk" />
+    </div>
+    <div>
+      <button class="randomize">Generate random story</button>
+    </div>
+    <!-- Thanks a lot to Willy Aguirre for his help with the code for this assessment -->
+    <p class="story"></p>
+
+    <script>
+      const customName = document.getElementById('customname');
+      const randomize = document.querySelector('.randomize');
+      const story = document.querySelector('.story');
+
+      // Function to pick a random value from an array
+      function randomValueFromArray(array) {
+        const random = Math.floor(Math.random() * array.length);
+        return array[random];
+      }
+
+      // Event listener for the "Generate random story" button
+      randomize.addEventListener('click', result);
+
+      function result() {
+        // Default values for name, weight, and temperature
+        let name = "Bob";
+        let weight = 300;
+        let temperature = 94;
+
+        // If a custom name is provided
+        if (customName.value !== '') {
+          name = customName.value;
+        }
+
+        // If the UK radio button is selected, change values
+        if (document.getElementById("uk").checked) {
+          weight = Math.round(210);  // UK weight in pounds
+          temperature = Math.round(34);  // UK temperature in Celsius
+        }
+
+        // Random selections for different parts of the story
+        const insertX = randomValueFromArray(['Willy the Goblin', 'Big Daddy', 'Father Christmas']);
+        const insertY = randomValueFromArray(['the soup kitchen', 'Disneyland', 'the White House']);
+        const insertZ = randomValueFromArray(['spontaneously combusted', 'melted into a puddle on the sidewalk', 'turned into a slug and crawled away']);
+
+        // Create the story string
+        const storyText = `It was ${temperature}° fahrenheit outside, so ${name} went for a walk. When they got to ${insertY}, they stared in horror for a few moments, then ${insertZ}. ${insertX} saw the whole thing, but was not surprised — ${name} weighs ${weight} pounds, and it was a hot day.`;
+
+        // Display the story
+        story.textContent = storyText;
+        story.style.visibility = 'visible';
+      }
+    </script>
+  </body>
+</html>

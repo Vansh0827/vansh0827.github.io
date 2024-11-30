@@ -1,0 +1,124 @@
+<!--
+	Name: Vansh Patel
+	File: Lab4_Part2.html
+	Date: 28 November 2024
+	Description: This code creates an image gallery where clicking a thumbnail updates a large display image. It also includes a button to toggle a dark overlay on the main image.
+	-->
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <title>Image Gallery</title>
+    <style>
+        h1 {
+            font-family: helvetica, arial, sans-serif;
+            text-align: center;
+        }
+
+        body {
+            width: 640px;
+            margin: 0 auto;
+        }
+
+        .full-img {
+            position: relative;
+            display: block;
+            width: 640px;
+            height: 480px;
+        }
+
+        .displayed-img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0);
+        }
+
+        button {
+            border: 0;
+            background: rgba(150, 150, 150, 0.6);
+            text-shadow: 1px 1px 1px white;
+            border: 1px solid #999;
+            position: absolute;
+            cursor: pointer;
+            top: 2px;
+            left: 2px;
+        }
+
+        .thumb-bar {
+            clear: both;
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between; /* Ensure images touch without gaps */
+            gap: 0; /* Remove any space between the images */
+        }
+    
+        .thumb-bar img {
+            display: block;
+            width: 18%; /* Adjust width as needed */
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Image Gallery Example</h1>
+    <div class="full-img">
+        <img class="displayed-img" src="images/pic1.jpg" alt="Closeup of a human eye">
+        <div class="overlay"></div>
+        <button class="dark">Darken</button>
+    </div>
+    <div class="thumb-bar">
+        <!-- Thumbnails will be dynamically added here -->
+    </div>
+
+    <script>
+        const displayedImage = document.querySelector('.displayed-img');
+        const thumbBar = document.querySelector('.thumb-bar');
+        const btn = document.querySelector('.dark');
+        const overlay = document.querySelector('.overlay');
+
+        // Array of image filenames and alt texts (5 images)
+        const images = [
+            { src: 'images/pic1.jpg', alt: 'Closeup of a human eye' },
+            { src: 'images/pic2.jpg', alt: 'A beautiful landscape' },
+            { src: 'images/pic3.jpg', alt: 'A colorful sunset' },
+            { src: 'images/pic4.jpg', alt: 'A mountain view' },
+            { src: 'images/pic5.jpg', alt: 'A city skyline at night' }
+        ];
+
+        // Loop through images to create thumbnails
+        images.forEach(image => {
+            const newImage = document.createElement('img');
+            newImage.setAttribute('src', image.src);
+            newImage.setAttribute('alt', image.alt);
+            thumbBar.appendChild(newImage);
+
+            // Add event listener to change displayed image on click
+            newImage.addEventListener('click', function() {
+                displayedImage.setAttribute('src', image.src);
+                displayedImage.setAttribute('alt', image.alt);
+            });
+        });
+
+        // Darken/Lighten button functionality
+        let isDarkened = false;
+
+        btn.addEventListener('click', function() {
+            if (isDarkened) {
+                overlay.style.backgroundColor = 'rgba(0, 0, 0, 0)';
+                isDarkened = false;
+            } else {
+                overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+                isDarkened = true;
+            }
+        });
+    </script>
+</body>
+</html>
