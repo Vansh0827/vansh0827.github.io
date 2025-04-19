@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vape Store</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('file:///C:/Users/HP/Desktop/Web/vanshpat.github.io/vape_image.png'); /* Local file path */
+            background-size: 110%; /* Make the image slightly larger */
+            background-position: center; /* Center the image */
+            background-repeat: no-repeat; /* Do not repeat the image */
+            background-attachment: fixed; /* Fix the background image */
+        }
+        header {
+            background: rgba(74, 144, 226, 0.8); /* Semi-transparent background */
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+            text-align: center;
+        }
+        nav ul li {
+            display: inline;
+            margin: 0 20px;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+        nav ul li a:hover {
+            color: #ff9800;
+        }
+        section {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.7); /* More transparent background */
+            margin: 20px auto;
+            width: 90%;
+            max-width: 800px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+            position: relative; /* Ensure sections are positioned relative to the body */
+            z-index: 1; /* Ensure sections are above the background */
+        }
+        section:hover {
+            transform: scale(1.02);
+        }
+        .product-category {
+            margin-bottom: 20px;
+        }
+        .product-category h3 {
+            background: #4a90e2;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .product-list {
+            list-style: none;
+            padding: 0;
+        }
+        .product-list li {
+            display: flex;
+            justify-content: space-between;
+            background: #f9f9f9;
+            margin: 5px 0;
+            padding: 15px;
+            border-radius: 5px;
+            transition: background 0.3s;
+            border-left: 5px solid #4a90e2;
+        }
+        .product-list li:hover {
+            background: #f1f1f1;
+        }
+        button {
+            padding: 10px 15px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #218838;
+        }
+        #cart {
+            text-align: center;
+            background: #fff3cd;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        #cart-items {
+            margin: 15px 0;
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            background: #ffebcc;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 5px 0;
+        }
+        #contact {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: grid;
+        }
+        #contact label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        #contact input, #contact textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        #contact button {
+            background: #4a90e2;
+            border: none;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        #contact button:hover {
+            background: #357ab8;
+        }
+    </style>
+    <script>
+        let cart = [];
+
+        function addToCart(item) {
+            cart.push(item);
+            updateCart();
+        }
+
+        function updateCart() {
+            const cartItems = document.getElementById("cart-items");
+            const cartCount = document.getElementById("cart-count");
+            cartItems.innerHTML = "";
+            cart.forEach((item, index) => {
+                const div = document.createElement("div");
+                div.classList.add("cart-item");
+                div.textContent = item;
+                const removeBtn = document.createElement("button");
+                removeBtn.textContent = "Remove";
+                removeBtn.onclick = () => removeFromCart(index);
+                div.appendChild(removeBtn);
+                cartItems.appendChild(div);
+            });
+            cartCount.textContent = cart.length;
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCart();
+        }
+
+        function checkout() {
+            if (cart.length === 0) {
+                alert("Your cart is empty!");
+            } else {
+                alert("Proceeding to checkout with " + cart.length + " items.");
+                cart = [];
+                updateCart();
+            }
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Welcome to Vape Store</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#products">Products</a></li>
+                <li><a href="#cart">Cart <span id="cart-count">0</span></a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <section id="home">
+        <h2>About Us</h2>
+        <p>Your premium source for high-quality vape products.</p>
+    </section>
+    
+    <section id="products">
+        <h2>Our Products</h2>
+        
+        <div class="product-category">
+            <h3>Z PODS (18.99+ Tax)</h3>
+            <ul class="product-list">
+                <li>Strawnana <button onclick="addToCart('Z PODS - Strawnana')">Add to Cart</button></li>
+                <li>Strawberry Mango <button onclick="addToCart('Z PODS - Strawberry Mango')">Add to Cart</button></li>
+                <li>Strawberry Kiwi Ice <button onclick="addToCart('Z PODS - Strawberry Kiwi Ice')">Add to Cart</button></li>
+                <li>Blue Lemon <button onclick="addToCart('Z PODS - Blue Lemon')">Add to Cart</button></li>
+                <li>Blue Raspberry Peach <button onclick="addToCart('Z PODS - Blue Raspberry Peach')">Add to Cart</button></li>
+                <li>Blueberry <button onclick="addToCart('Z PODS - Blueberry')">Add to Cart</button></li>
+                <li>Fruit Punch <button onclick="addToCart('Z PODS - Fruit Punch')">Add to Cart</button></li>
+                <li>Pink Lemon <button onclick="addToCart('Z PODS - Pink Lemon')">Add to Cart</button></li>
+                <li>Mango Pineapple <button onclick="addToCart('Z PODS - Mango Pineapple')">Add to Cart</button></li>
+                <li>Mango Ice <button onclick="addToCart('Z PODS - Mango Ice')">Add to Cart</button></li>
+                <li>Apple Ice <button onclick="addToCart('Z PODS - Apple Ice')">Add to Cart</button></li>
+                <li>Gummy Bear Ice <button onclick="addToCart('Z PODS - Gummy Bear Ice')">Add to Cart</button></li>
+                <li>Watermelon <button onclick="addToCart('Z PODS - Watermelon')">Add to Cart</button></li>
+                <li>Skittle Ice <button onclick="addToCart('Z PODS - Skittle Ice')">Add to Cart</button></li>
+                <li>Pineapple Kiwi Ice <button onclick="addToCart('Z PODS - Pineapple Kiwi Ice')">Add to Cart</button></li>
+                <li>Guava Ice <button onclick="addToCart('Z PODS - Guava Ice')">Add to Cart</button></li>
+                <li>Peach Ice <button onclick="addToCart('Z PODS - Peach Ice')">Add to Cart</button></li>
+                <li>Banana Ice <button onclick="addToCart('Z PODS - Banana Ice')">Add to Cart</button></li>
+                <li>Ice Pineapple <button onclick="addToCart('Z PODS - Ice Pineapple')">Add to Cart</button></li>
+                <li>Mint <button onclick="addToCart('Z PODS - Mint')">Add to Cart</button></li>
+                <li>Bear Fruit <button onclick="addToCart('Z PODS - Bear Fruit')">Add to Cart</button></li>
+            </ul>
+        </div>
+
+        <div class="product-category">
+            <h3>Vice (19.99+ Tax)</h3>
+            <ul class="product-list">
+                <li>Blue Razz Melon Ice <button onclick="addToCart('Vice - Blue Razz Melon Ice')">Add to Cart</button></li>
+                <li>Grape Ice <button onclick="addToCart('Vice - Grape Ice')">Add to Cart</button></li>
+                <li>Berry Burst Ice <button onclick="addToCart('Vice - Berry Burst Ice')">Add to Cart</button></li>
+                <li>Lush Ice <button onclick="addToCart('Vice - Lush Ice')">Add to Cart</button></li>
+                <li>Strawberry Banana Ice <button onclick="addToCart('Vice - Strawberry Banana Ice')">Add to Cart</button></li>
+                <li>Peach Ice <button onclick="addToCart('Vice - Peach Ice')">Add to Cart</button></li>
+                <li>Mint <button onclick="addToCart('Vice - Mint')">Add to Cart</button></li>
+                <li>Mango Ice <button onclick="addToCart('Vice - Mango Ice')">Add to Cart</button></li>
+            </ul>
+        </div>
+
+        <div class="product-category">
+            <h3>STLTH PODS (18.99+ Tax)</h3>
+            <ul class="product-list">
+                <li>Frost <button onclick="addToCart('STLTH PODS - Frost')">Add to Cart</button></li>
+                <li>Strawberry <button onclick="addToCart('STLTH PODS - Strawberry')">Add to Cart</button></li>
+                <li>Grape Ice <button onclick="addToCart('STLTH PODS - Grape Ice')">Add to Cart</button></li>
+                <li>Honeydew Menthol <button onclick="addToCart('STLTH PODS - Honeydew Menthol')">Add to Cart</button></li>
+                <li>Berry Blast <button onclick="addToCart('STLTH PODS - Berry Blast')">Add to Cart</button></li>
+                <li>Hawaiian Pog <button onclick="addToCart('STLTH PODS - Hawaiian Pog')">Add to Cart</button></li>
+                <li>Grapefruit Watermelon <button onclick="addToCart('STLTH PODS - Grapefruit Watermelon')">Add to Cart</button></li>
+                <li>Blue Raspberry <button onclick="addToCart('STLTH PODS - Blue Raspberry')">Add to Cart</button></li>
+            </ul>
+        </div>
+        
+        <div class="product-category">
+            <h3>Stith 20K (37.99+ Tax)</h3>
+            <ul class="product-list">
+                <li>Cherry Grape Ice <button onclick="addToCart('Stith 20K - Cherry Grape Ice')">Add to Cart</button></li>
+                <li>Blood Orange Ice <button onclick="addToCart('Stith 20K - Blood Orange Ice')">Add to Cart</button></li>
+                <li>Peach Blue Razz Ice <button onclick="addToCart('Stith 20K - Peach Blue Razz Ice')">Add to Cart</button></li>
+                <li>Watermelon Lime Ice <button onclick="addToCart('Stith 20K - Watermelon Lime Ice')">Add to Cart</button></li>
+                <li>Juicy Peach Ice <button onclick="addToCart('Stith 20K - Juicy Peach Ice')">Add to Cart</button></li>
+            </ul>
+        </div>
+        
+        <div class="product-category">
+            <h3>Flavour Beast 20K (36.99+ Tax)</h3>
+            <ul class="product-list">
+                <li>Strawberry Watermelon <button onclick="addToCart('Flavour Beast 20K - Strawberry Watermelon')">Add to Cart</button></li>
+                <li>Peach Mango <button onclick="addToCart('Flavour Beast 20K - Peach Mango')">Add to Cart</button></li>
+            </ul>
+        </div>
+        
+        <div class="product-category">
+            <h3>Oxbar 8K (29.99+ Tax)</h3>
+            <ul class="product-list">
+                <li>Raspberry Watermelon Ice <button onclick="addToCart('Oxbar 8K - Raspberry Watermelon Ice')">Add to Cart</button></li>
+                <li>Twisted Apple <button onclick="addToCart('Oxbar 8K - Twisted Apple')">Add to Cart</button></li>
+                <li>Cherry Lime Classic <button onclick="addToCart('Oxbar 8K - Cherry Lime Classic')">Add to Cart</button></li>
+                <li>Grape Ice <button onclick="addToCart('Oxbar 8K - Grape Ice')">Add to Cart</button></li>
+                <li>Blue Raspberry <button onclick="addToCart('Oxbar 8K - Blue Raspberry')">Add to Cart</button></li>
+            </ul>
+        </div>
+        
+        <div class="product-category">
+            <h3>Level X 25K (29.99+ Tax)</h3>
+            <ul class="product-list">
+                <li>Banana Blackberry <button onclick="addToCart('Level X 25K - Banana Blackberry')">Add to Cart</button></li>
+                <li>Orange <button onclick="addToCart('Level X 25K - Orange')">Add to Cart</button></li>
+                <li>Blue Razz <button onclick="addToCart('Level X 25K - Blue Razz')">Add to Cart</button></li>
+                <li>Peach Berry <button onclick="addToCart('Level X 25K - Peach Berry')">Add to Cart</button></li>
+                <li>White Peach <button onclick="addToCart('Level X 25K - White Peach')">Add to Cart</button></li>
+                <li>VC Delight <button onclick="addToCart('Level X 25K - VC Delight')">Add to Cart</button></li>
+                <li>Blueberry <button onclick="addToCart('Level X 25K - Blueberry')">Add to Cart</button></li>
+            </ul>
+        </div>
+        
+
+        <div class="product-category">
+            <h3>Feed Sync (34.99+ Tax)</h3>
+            <ul class="product-list">
+                <li>Strawberry Chill <button onclick="addToCart('Feed Sync - Strawberry Chill')">Add to Cart</button></li>
+                <li>Peachy Mango <button onclick="addToCart('Feed Sync - Peachy Mango')">Add to Cart</button></li>
+                <li>Berry Blossom <button onclick="addToCart('Feed Sync - Berry Blossom')">Add to Cart</button></li>
+                <li>Frozen Watermelon <button onclick="addToCart('Feed Sync - Frozen Watermelon')">Add to Cart</button></li>
+                <li>Arctic Blue Razz <button onclick="addToCart('Feed Sync - Arctic Blue Razz')">Add to Cart</button></li>
+            </ul>
+        </div>
+
+        <div class="product-category">
+            <h3>Flavour Beast 18K (34.99+ Tax)</h3>
+            <ul class="product-list">
+                <li>Wild White Grape <button onclick="addToCart('Flavour Beast 18K - Wild White Grape')">Add to Cart</button></li>
+                <li>Triple Berry <button onclick="addToCart('Flavour Beast 18K - Triple Berry')">Add to Cart</button></li>
+            </ul>
+        </div>
+
+        <div class="product-category">
+            <h3>Hyperbar 38K (34.99+ Tax)</h3>
+            <ul class="product-list">
+                <li>Blueberry Watermelon Ice <button onclick="addToCart('Hyperbar 38K - Blueberry Watermelon Ice')">Add to Cart</button></li>
+                <li>Peach Blue Razz <button onclick="addToCart('Hyperbar 38K - Peach Blue Razz')">Add to Cart</button></li>
+                <li>Northern Freeze <button onclick="addToCart('Hyperbar 38K - Northern Freeze')">Add to Cart</button></li>
+                <li>Banana Ice <button onclick="addToCart('Hyperbar 38K - Banana Ice')">Add to Cart</button></li>
+            </ul>
+        </div>
+
+        <div class="product-category">
+            <h3>Kraze Mega (34.99+ Tax)</h3>
+            <ul class="product-list">
+                <li>Cherry Blast Ice <button onclick="addToCart('Kraze Mega - Cherry Blast Ice')">Add to Cart</button></li>
+                <li>Triple Berry Ice <button onclick="addToCart('Kraze Mega - Triple Berry Ice')">Add to Cart</button></li>
+            </ul>
+        </div>
+
+        <div class="product-category">
+            <h3>Loop 9K (24.99+ Tax)</h3>
+            <ul class="product-list">
+                <li>Strawnana <button onclick="addToCart('Loop 9K - Strawnana')">Add to Cart</button></li>
+                <li>Peach Blue Razz Ice <button onclick="addToCart('Loop 9K - Peach Blue Razz Ice')">Add to Cart</button></li>
+            </ul>
+        </div>
+
+        <div class="product-category">
+            <h3>Loop 25K (29.99+ Tax)</h3>
+            <ul class="product-list">
+                <li>Juicy Peach Ice <button onclick="addToCart('Loop 25K - Juicy Peach Ice')">Add to Cart</button></li>
+                <li>Blue Razz <button onclick="addToCart('Loop 25K - Blue Razz')">Add to Cart</button></li>
+            </ul>
+        </div>
+
+        <div class="product-category">
+            <h3>Geek Bar 25K (34.99+ Tax)</h3>
+            <ul class="product-list">
+                <li>Strawberry Banana Ice <button onclick="addToCart('Geek Bar 25K - Strawberry Banana Ice')">Add to Cart</button></li>
+                <li>Watermelon Ice <button onclick="addToCart('Geek Bar 25K - Watermelon Ice')">Add to Cart</button></li>
+            </ul>
+        </div>
+
+        <div class="product-category">
+            <h3>Blast 30K (34.99+ Tax)</h3>
+            <ul class="product-list">
+                <li>Blue Razz Ice <button onclick="addToCart('Blast 30K - Blue Razz Ice')">Add to Cart</button></li>
+                <li>Grape Ice <button onclick="addToCart('Blast 30K - Grape Ice')">Add to Cart</button></li>
+            </ul>
+        </div>
+
+        <div class="product-category">
+            <h3>Oxbar 20K (34.99+ Tax)</h3>
+            <ul class="product-list">
+                <li>Grape Ice <button onclick="addToCart('Oxbar 20K - Grape Ice')">Add to Cart</button></li>
+                <li>Mint BBG <button onclick="addToCart('Oxbar 20K - Mint BBG')">Add to Cart</button></li>
+            </ul>
+        </div>
+
+        <div class="product-category">
+            <h3>Oxbar 25K (34.99+ Tax)</h3>
+            <ul class="product-list">
+                <li>Mango Ice <button onclick="addToCart('Oxbar 25K - Mango Ice')">Add to Cart</button></li>
+                <li>Peach Berry <button onclick="addToCart('Oxbar 25K - Peach Berry')">Add to Cart</button></li>
+            </ul>
+        </div>
+
+    </section>
+    
+    <section id="cart">
+        <h2>Shopping Cart</h2>
+        <div id="cart-items"></div>
+        <button id="checkout" onclick="checkout()">Checkout</button>
+    </section>
+    
+    <section id="contact">
+        <h2>Contact Us</h2>
+        <form>
+            <label for="name">Name:</label>
+        <input type="text" id="name" required>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" required>
+
+        <label for="address">Address:</label>
+        <input type="text" id="address" placeholder="Street Address" required>
+
+        <label for="city">City:</label>
+        <input type="text" id="city" required>
+
+        <label for="province">Province/State:</label>
+        <input type="text" id="province" required>
+
+        <label for="postal">Postal/ZIP Code:</label>
+        <input type="text" id="postal" required>
+
+        <label for="message">Message:</label>
+        <textarea id="message" required></textarea>
+            
+            <button type="submit">Send</button>
+        </form>
+    </section>
+</body>
+</html>
